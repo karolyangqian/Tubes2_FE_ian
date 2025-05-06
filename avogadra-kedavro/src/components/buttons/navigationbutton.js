@@ -4,14 +4,16 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-export function NavigationButton({ imageSrc, altText, route }) {
+export function NavigationButton({ imageSrc, altText, onClick, width = 400, height = 80 }) {
   const router = useRouter();
 
   const handleClick = () => {
-    if (route) {
-      router.push(route);
-    }
-  };
+    if (onClick) {
+      onClick();
+    } else {
+      router.push('/');
+    };
+  }
 
   return (
     <div 
@@ -21,9 +23,9 @@ export function NavigationButton({ imageSrc, altText, route }) {
       <Image
         src={imageSrc}
         alt={altText}
-        width={400}
-        height={80}
-        className="w-auto h-auto"
+        width={width}
+        height={height}
+        className="h-auto"
       />
     </div>
   );
