@@ -9,7 +9,7 @@ export default function RetroButton({ iconPath, text, onClick }) {
         px-3 py-2 rounded-2xl cursor-pointer select-none
         transition-colors duration-200 ease-in-out
         flex items-center justify-between gap-4
-        w-fit min-w-[120px] max-w-full
+        w-fit max-w-full
         border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
         hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
         active:translate-x-[2px] active:translate-y-[2px]
@@ -33,6 +33,7 @@ export default function RetroButton({ iconPath, text, onClick }) {
           text-shadow-press-start
           text-sm md:text-lg
           text-center flex-grow
+          tracking-widest
         ">
           {text}
         </span>
