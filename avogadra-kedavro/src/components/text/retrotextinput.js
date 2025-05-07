@@ -22,7 +22,6 @@ export default function RetroTextInput({
 
   return (
     <>
-      {/* Hidden measurement element */}
       <span
         ref={spanRef}
         className="
@@ -57,7 +56,7 @@ export default function RetroTextInput({
           </div>
         )}
         
-        <div className="flex items-baseline min-w-0">
+        <div className="flex items-baseline min-w-0 w-full">
           {label && (
             <span className="
               font-press-start

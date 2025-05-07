@@ -11,7 +11,6 @@ export default function Start() {
   const [maxRecipe, setMaxRecipe] = React.useState(0)
 
   const handleOnSearch = () => {
-    // Handle search logic here
     console.log("Searching for:", elements);
   }
 
