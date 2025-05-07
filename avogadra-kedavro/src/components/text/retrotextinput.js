@@ -56,7 +56,7 @@ export default function RetroTextInput({
           </div>
         )}
         
-        <div className="flex items-baseline min-w-0">
+        <div className="flex items-baseline min-w-0 w-full">
           {label && (
             <span className="
               font-press-start
