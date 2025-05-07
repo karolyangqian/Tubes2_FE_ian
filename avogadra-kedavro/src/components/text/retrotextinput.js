@@ -22,7 +22,6 @@ export default function RetroTextInput({
 
   return (
     <>
-      {/* Hidden measurement element */}
       <span
         ref={spanRef}
         className="
