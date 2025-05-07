@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <BackgroundMusic />
-        <div className="bg-[url('/background.svg')] bg-contain bg-no-repeat bg-cover">
+        <div className="bg-[url('/background.svg')] bg-cover bg-no-repeat">
           {children}
         </div>
       </body>

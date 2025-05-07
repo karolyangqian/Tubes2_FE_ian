@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Home from "@/components/views/home";
 import Start from "@/components/views/start";
-
+import RetroButton from "@/components/buttons/retrobutton";
 
 export default function App() {
   const transitionDuration = 2000;
@@ -19,23 +19,33 @@ export default function App() {
 
       setTimeout(() => {
         setHomePage(false);
-        setTransitioningHome(false);
         setTransitioningStart(true);
       }, transitionDuration);
     };
 
+  const handleBackClick = () => {
+      setTransitioningStart(false);
+      setHomePage(true);
+      
+      setTimeout(() => {
+        setStartPage(false);
+        setTransitioningHome(false);
+      }, transitionDuration);
+    }
+
   return (
     <div className="relative w-full h-screen">
-      {
-        startPage && (
+      { startPage && (
         <div 
-        className={`transition-opacity ${transitioningStart ? 'opacity-100' : 'opacity-0'}`}
-        style={{ transitionDuration: `${transitionDuration}ms` }}
+        className={`absolute p-6  z-10 hover:opacity-100 transition-opacity ${transitioningStart ? 'opacity-20' : 'opacity-0'}`}
+        style={{ transitionDuration: `${transitionDuration/2}ms` }}
         >
-          <Start />
-        </div>
+        <RetroButton
+          text="BACK"
+          onClick={handleBackClick}
+        />
+      </div>
       )}
-
       {
         homePage && (
           <div 
@@ -49,6 +59,16 @@ export default function App() {
           </div>
         )
       }
+      {
+        startPage && (
+        <div 
+        className={`transition-opacity ${transitioningStart ? 'opacity-100' : 'opacity-0'}`}
+        style={{ transitionDuration: `${transitionDuration}ms` }}
+        >
+          <Start />
+        </div>
+      )}
+
     </div>
   );
 }
