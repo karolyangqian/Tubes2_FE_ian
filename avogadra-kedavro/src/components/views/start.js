@@ -30,12 +30,12 @@ export default function Start() {
       const graphData = await response.json();
       setGraphData(graphData);
       console.log('Graph data fetched:', graphData);
-      setSearched(!searched);
-      setTime(100);
-      setNode(100);
     } catch (error) {
       console.error('Error fetching graph data:', error);
     }
+    setSearched(!searched);
+    setTime(100);
+    setNode(100);
     
   }
 
