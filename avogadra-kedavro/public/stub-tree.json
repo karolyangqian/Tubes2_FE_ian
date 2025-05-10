@@ -1,0 +1,63 @@
+{
+  "elementName": "Brick",
+  "searchParams": {
+    "algorithm": "dfs",
+    "count": 1,
+    "mode": "shortest"
+  },
+  "found": true,
+  "searchTimeMs": 1.721,
+  "nodesVisited": 5,
+  "recipes": [
+    {
+      "namaElemen": "Brick",
+      "isBaseElement": false,
+      "dibuatDari": [
+        [
+          {
+            "namaElemen": "Mud",
+            "isBaseElement": false,
+            "dibuatDari": [
+              [
+                {
+                  "namaElemen": "Earth",
+                  "isBaseElement": true
+                },
+                {
+                  "namaElemen": "Water",
+                  "isBaseElement": true
+                }
+              ]
+            ]
+          },
+          {
+            "namaElemen": "Fire",
+            "isBaseElement": true
+          }
+        ],
+        [
+          {
+            "namaElemen": "Clay",
+            "isBaseElement": false,
+            "dibuatDari": [
+              [
+                {
+                  "namaElemen": "Mud",
+                  "isBaseElement": false
+                },
+                {
+                  "namaElemen": "Sand",
+                  "isBaseElement": false
+                }
+              ]
+            ]
+          },
+          {
+            "namaElemen": "Stone",
+            "isBaseElement": false
+          }
+        ]
+      ]
+    }
+  ]
+}

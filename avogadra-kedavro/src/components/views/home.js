@@ -5,14 +5,13 @@ export default function Home({ onStartClick, onAboutClick }) {
   
 
   return (
-    <div className="relative w-full h-screen">
-      <div className="absolute top-10 left-10 w-3/5">
+    <div className="w-full h-screen">
+      <div className="absolute flex top-10 left-10">
           <Image
             src="/home/title.svg"
             alt="Title"
-            width={200}
+            width={900}
             height={200}
-            className="w-full h-auto"
           />
         </div>
         <div className="absolute bottom-15 right-10 flex flex-col space-y-4">

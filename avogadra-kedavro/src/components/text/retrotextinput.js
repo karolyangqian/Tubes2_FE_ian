@@ -8,7 +8,8 @@ export default function RetroTextInput({
   placeholder,
   iconPath,
   stretch = false,
-  type = "text"
+  type = "text",
+  isActive = true,
 }) {
   const [placeholderWidth, setPlaceholderWidth] = useState('auto');
   const spanRef = useRef(null);
@@ -19,9 +20,9 @@ export default function RetroTextInput({
       setPlaceholderWidth(`${spanRef.current.offsetWidth}px`);
     }
   }, [placeholder]);
-
+  
   return (
-    <>
+    <div className={`${isActive ? 'opacity-100' : 'opacity-50'} w-full`}>
       <span
         ref={spanRef}
         className="
@@ -72,7 +73,7 @@ export default function RetroTextInput({
           <input
             type={type}
             value={value}
-            onChange={onChange}
+            onChange={isActive ? onChange : () => {}}
             placeholder={placeholder}
             style={{ width: stretch ? '100%' : placeholderWidth }}
             className="
@@ -90,6 +91,6 @@ export default function RetroTextInput({
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }

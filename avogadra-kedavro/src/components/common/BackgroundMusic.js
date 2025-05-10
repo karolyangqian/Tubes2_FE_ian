@@ -9,7 +9,7 @@ export default function BackgroundMusic() {
   useEffect(() => {
     const handleInteraction = () => {
       if (!hasInteracted && audioRef.current) {
-          audioRef.current.volume = 1.0;
+          audioRef.current.volume = 0.6;
         audioRef.current.play()
           .then(() => setHasInteracted(true))
           .catch(error => console.log("Playback failed:", error));
