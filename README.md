@@ -1,7 +1,7 @@
 # TUGAS BESAR 2 STRATEGI ALGORITMA - IF2211  
 
 ## Deskripsi Singkat 
-Ini adalah repository untuk frontend dari aplikasi aplikasi website pencari resep Little Alchemy 2.
+Ini adalah repository untuk frontend dari aplikasi aplikasi website pencari resep Little Alchemy 2 menggunakan algoritma BFS dan DFS.
  
  ## Cara Menjalankan Program
  1. Clone repository Github 
