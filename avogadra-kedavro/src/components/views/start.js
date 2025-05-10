@@ -1,16 +1,18 @@
 import React from 'react'
 import { Network } from 'vis-network'
 import { useEffect } from 'react'
+import { options } from './networkoptions.js'
+import { convertDataToNetwork } from './utils.js'
 import RetroButton from '@/components/buttons/retrobutton'
 import RetroTextInput from '@/components/text/retrotextinput'
 
 export default function Start() {
+  const [bfs, setBfs] = React.useState(true)
   const [dfs, setDfs] = React.useState(false)
-  const [bfs, setBfs] = React.useState(false)
   const [bidirectional, setBidirectional] = React.useState(false)
   const [multipleRecipe, setMultipleRecipe] = React.useState(false)
   const [elements, setElements] = React.useState([])
-  const [maxRecipe, setMaxRecipe] = React.useState(0)
+  const [maxRecipe, setMaxRecipe] = React.useState(1)
   const [searched, setSearched] = React.useState(false)
   const [graphData, setGraphData] = React.useState([])
   const [time, setTime] = React.useState(0)
@@ -20,118 +22,61 @@ export default function Start() {
   const handleOnSearch = () => {
     console.log("Searching for:", elements);
   }
+  const readStubTree = async () => {
+    try {
+      const response = await fetch('/stub-tree.json');
+      const data = await response.json();
+      setGraphData(convertDataToNetwork(data));
+      setSearched(!searched);
+      setTime(data['searchTimeMs']);
+      setNode(data['nodesVisited']);
+      return;
+    } catch (err) {
+      console.error('Error loading JSON:', err);
+      return;
+    }
+  };
 
   const fetchGraphData = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/graph-data');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+    if (elements.length > 0 && (bfs || dfs || bidirectional) && maxRecipe > 0) {
+      setSearched(false);
+      setGraphData([]);
+      setTime(0);
+      setNode(0);
+      try {
+        const algorithm = bfs ? 'bfs' : dfs ? 'dfs' : 'bidirectional';
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solve-recipe?element=${elements}&algorithm=${algorithm}&count=${maxRecipe}`);
+        const data = await response.json();
+        setGraphData(convertDataToNetwork(data));
+        console.log('Graph data fetched:', data);
+        setSearched(true);
+        setTime(data.searchTimeMs);
+        setNode(data.nodesVisited);
       }
-      const graphData = await response.json();
-      setGraphData(graphData);
-      console.log('Graph data fetched:', graphData);
-      setSearched(!searched);
-      setTime(100);
-      setNode(100);
-    } catch (error) {
-      console.error('Error fetching graph data:', error);
+      catch (error) {
+        setGraphData([]);
+        setSearched(true);
+      }
     }
-    
   }
 
+  useEffect(() => {
+    if (!multipleRecipe) {
+      setMaxRecipe(1);
+    }
+  }, [multipleRecipe]);
+  
   useEffect(() => {
     if (searched && graphData) {
       const container = document.getElementById("graph");
       if (container) {
-        var nodes = [
-          { id: 1, label: "Node 1" },
-          { id: 2, label: "Node 2" },
-          { id: 3, label: "Node 3" },
-          { id: 4, label: "Node 4" },
-          { id: 5, label: "Node 5" },
-          { id: 11, label: "Node 1" },
-          { id: 12, label: "Node 2" },
-          { id: 13, label: "Node 3" },
-          { id: 14, label: "Node 4" },
-          { id: 15, label: "Node 5" },
-        ];
-        
-        var edges = [
-          { from: 1, to: 3, arrows: "to" },
-          { from: 2, to: 1, arrows: "to" },
-          { from: 2, to: 4, arrows: "to" },
-          { from: 2, to: 5, arrows: "to" },
-          { from: 1, to: 13, arrows: "to" },
-          { from: 2, to: 11, arrows: "to" },
-          { from: 2, to: 14, arrows: "to" },
-          { from: 12, to: 2, arrows: "to" },
-          { from: 12, to: 5, arrows: "to" },
-        ];
-        const data = {
-          nodes: nodes,
-          edges: edges,
-        };
-        const options = {
-          nodes: {
-            shape: 'box',
-            margin: 10,
-            font: {
-                size: 14,
-                face: 'Arial',
-                color: '#333333'
-            },
-            borderWidth: 1,
-            scaling: {
-                label: {
-                    enabled: true,
-                    min: 14,
-                    max: 20
-                }
-            },
-            shadow: false
-        },
-        edges: {
-            arrows: {
-                to: { enabled: true, scaleFactor: 0.6, type: 'arrow' }
-            },
-            color: {
-                color: '#cccccc',
-                highlight: '#b0b0b0',
-                hover: '#b0b0b0',
-                opacity: 0.8
-            },
-            smooth: {
-                enabled: true,
-                type: "continuous",
-                roundness: 0.1
-            },
-            width: 0.5
-        },
-        groups: {
-          baseElement: {
-              color: { background: '#E77BFF', border: '#0077cc' },
-              shape: 'ellipse',
-              font: { size: 16, color: '#004c8c' }
-          },
-          derivedElement: {
-              color: { background: '#E77BFF', border: '#387002' }
-          }
-        },
-        interaction: {
-          hover: true,
-          dragNodes: true,
-          dragView: true,
-          zoomView: true,
-          tooltipDelay: 200
-        },
-        };
-        new Network(container, data, options);
+        new Network(container, graphData, options);
       }
     }
   }, [searched, graphData]);
 
   return (
-    <div className='absolute inset-0 bg-[#2E1855]/84 bg- rounded-lg m-10 p-8'>
+    <div className='absolute flex flex-col inset-0 bg-[#2E1855]/84 rounded-4xl m-10 p-8 overflow-hidden'>
       <h1 className="text-center text-white text-xs md:text-lg lg:text-2xl font-bold font-press-start text-shadow-press-start tracking-widest">
         PICK YOUR ALGORITHM, LET THE ALCHEMY BEGIN.
       </h1>
@@ -160,8 +105,8 @@ export default function Start() {
           {/* Bottom Button */}
           <div className='flex justify-between'>
             <RetroTextInput
-              value={elements}
-              onChange={(e) => setElements(e.target.value.toUpperCase())}
+              value={elements.toString().toUpperCase()}
+              onChange={(e) => setElements(e.target.value.toLowerCase())}
               placeholder="ENTER YOUR ELEMENTS HERE"
               iconPath="/start/magnifying-glass.svg"
               stretch={true}
@@ -189,6 +134,7 @@ export default function Start() {
               placeholder="N"
               stretch={false}
               type='number'
+              isActive={multipleRecipe}
             />
             <RetroButton
               iconPath="/start/magnifying-glass.svg"
@@ -199,19 +145,21 @@ export default function Start() {
         </div>
       </div>
       {searched && (
-        <div className='flex justify-between max-h-[600px] overflow-hidden'>
-          <div id='graph' className='w-[1000px] mt-8'></div>
-          <div className='flex flex-col mt-20 items-center gap-10'>
-            <div className='text-center text-[#E77BFF] text-3xl max-w-[600px] font-bold font-press-start text-shadow-press-start tracking-widest leading-15'>
-              Voilà, YOU FOUND THE RECIPE!
+        <div className='flex justify-between grid-cols-2 overflow-hidden gap-4 items-center'>
+          <div id='graph' className='h-full w-full mt-8'></div>
+          <div className='flex flex-col items-center gap-10'>
+            <div className='text-center text-[#E77BFF] text-xl lg:text-xl max-w-[600px] font-bold font-press-start text-shadow-press-start tracking-widest leading-10'>
+              {graphData && graphData.length > 0 && graphData.nodes.length > 0 ? 
+                "VOILÀ, YOU FOUND THE RECIPE!" : "NO RECIPE FOUND, TRY ANOTHER!"
+              }
             </div>
-            <div className='flex items-center bg-[url("/start/button-brown-plain.svg")] bg-cover bg-no-repeat h-[110px] aspect-[356/108]'>
-              <h1 className="text-left text-black font-press-start text-shadow-press-start text-xs md:text-lg lg:text-2xl font-bold tracking-wider pl-8">
-                TIME:{time}ms
+            <div className='flex items-center bg-[url("/start/button-brown-plain.svg")] bg-cover bg-no-repeat h-[90px] aspect-[356/108]'>
+              <h1 className="text-left text-black font-press-start text-shadow-press-start text-xs md:text-lg font-bold tracking-wider pl-8">
+                TIME:{time.toPrecision(5)}ms
               </h1>
             </div>
-            <div className='flex items-center bg-[url("/start/button-brown-plain.svg")] bg-cover bg-no-repeat h-[110px] aspect-[356/108]'>
-              <h1 className="text-left text-black font-press-start text-shadow-press-start text-xs md:text-lg lg:text-2xl font-bold tracking-wider pl-8">
+            <div className='flex items-center bg-[url("/start/button-brown-plain.svg")] bg-cover bg-no-repeat h-[90px] aspect-[356/108]'>
+              <h1 className="text-left text-black font-press-start text-shadow-press-start text-xs md:text-lg font-bold tracking-wider pl-8">
                 NODE:{node}
               </h1>
             </div>
