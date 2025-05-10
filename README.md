@@ -1,7 +1,7 @@
 # TUGAS BESAR 2 STRATEGI ALGORITMA - IF2211  
 
 ## Deskripsi Singkat 
-Ini adalah repository untuk frontend dari aplikasi aplikasi website pencari resep Little Alchemy 2 menggunakan algoritma BFS dan DFS.
+Ini adalah repository untuk frontend dari aplikasi aplikasi website pencari resep Little Alchemy 2.
  
  ## Cara Menjalankan Program
  1. Clone repository Github 
@@ -12,19 +12,25 @@ git clone https://github.com/karolyangqian/Tubes2_FE_ian.git
 ```bash
 npm install
 ```
- 3. Clone repository backend dari aplikasi ini
+3. Buat file `.env` di root directory project lalu tambahkan environment variable berikut:
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8080
+# NEXT_PUBLIC_API_URL=https://tubes2-be-ian.vercel.app
+```
+4. Clone repository backend dari aplikasi ini
 ```bash
 git clone https://github.com/graceevelyns/Tubes2_BE_ian.git
  ```
-4. Jalankan backend sesuai arahan yang ada di repository backend.
-5. Setelah backend berjalan, jalankan frontend dengan perintah:
+5. Jalankan backend sesuai arahan yang ada di repository backend.
+
+6. Setelah backend berjalan, jalankan frontend dengan perintah:
 ```bash
 npm start
 ```
-6. Buka browser dan akses aplikasi di `localhost:3000`.
+7. Buka browser dan akses aplikasi di `localhost:3000`.
 
 ## Deployment
-Aplikasi ini sudah dideploy di Vercel. Anda dapat mengaksesnya di [sini](https://tubes2-fe-ian.vercel.app/). 
+Aplikasi ini sudah dideploy di Vercel. Anda dapat mengaksesnya di [sini](https://tubes2-fe-ian.vercel.app/).
 
 ## Anggota Kelompok
 <table>
