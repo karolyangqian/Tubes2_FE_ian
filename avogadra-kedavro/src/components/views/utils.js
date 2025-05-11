@@ -16,6 +16,12 @@ export function convertDataToNetwork(data) {
     const root = recipes[0];
     resetNodeCounter();
     recipesToNetworkHelper(root, networkData);
+  } else {
+    networkData.nodes.push({
+      id: 0,
+      label: data.elementName,
+      group: "target"
+    });
   }
   return networkData;
 }

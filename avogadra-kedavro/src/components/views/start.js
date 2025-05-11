@@ -17,6 +17,7 @@ export default function Start() {
   const [graphData, setGraphData] = React.useState([])
   const [time, setTime] = React.useState(0)
   const [node, setNode] = React.useState(0)
+  const [recipeFound, setRecipeFound] = React.useState(false)
   
 
   const handleOnSearch = () => {
@@ -40,6 +41,7 @@ export default function Start() {
   const fetchGraphData = async () => {
     if (elements.length > 0 && (bfs || dfs || bidirectional) && maxRecipe > 0) {
       setSearched(false);
+      setRecipeFound(false);
       setGraphData([]);
       setTime(0);
       setNode(0);
@@ -48,13 +50,15 @@ export default function Start() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solve-recipe?element=${elements}&algorithm=${algorithm}&count=${maxRecipe}`);
         const data = await response.json();
         setGraphData(convertDataToNetwork(data));
-        console.log('Graph data fetched:', data);
+        setRecipeFound(data.recipes.length > 0);
+        console.log('Data fetched:', data);
+        console.log('Graph data:', graphData);
         setSearched(true);
         setTime(data.searchTimeMs);
         setNode(data.nodesVisited);
       }
       catch (error) {
-        setGraphData([]);
+        // setGraphData([]);
         setSearched(true);
       }
     }
@@ -149,7 +153,7 @@ export default function Start() {
           <div id='graph' className='h-full w-full mt-8'></div>
           <div className='flex flex-col items-center gap-10'>
             <div className='text-center text-[#E77BFF] text-xl lg:text-xl max-w-[600px] font-bold font-press-start text-shadow-press-start tracking-widest leading-10'>
-              {graphData && graphData.length > 0 && graphData.nodes.length > 0 ? 
+              {recipeFound ? 
                 "VOILÀ, YOU FOUND THE RECIPE!" : "NO RECIPE FOUND, TRY ANOTHER!"
               }
             </div>
