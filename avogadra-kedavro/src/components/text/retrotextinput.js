@@ -52,7 +52,7 @@ export default function RetroTextInput({
               alt="Input icon" 
               width={24} 
               height={24}
-              className="w-8 h-8"
+              className="w-4 h-4 md:w-8 md:h-8"
             />
           </div>
         )}
@@ -62,9 +62,10 @@ export default function RetroTextInput({
             <span className="
               font-press-start
               text-shadow-press-start
-              text-sm md:text-lg
+              text-xs md:text-lg
               tracking-widest
               whitespace-nowrap
+              py-1
             ">
               {label}
             </span>
@@ -79,7 +80,7 @@ export default function RetroTextInput({
             className="
               font-press-start
               text-shadow-press-start
-              text-sm md:text-lg
+              text-xs md:text-lg
               bg-transparent border-none outline-none
               tracking-widest
               placeholder-white/70
