@@ -39,6 +39,9 @@ export default function Start() {
   };
 
   const fetchGraphData = async () => {
+    fetch('/api/hello')
+    .then(r => r.json())
+    .then(d => console.log(d));
     if (elements.length > 0 && (bfs || dfs || bidirectional) && maxRecipe > 0) {
       setSearched(false);
       setRecipeFound(false);
