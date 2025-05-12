@@ -133,13 +133,13 @@ export default function Start() {
           </div>
           
           {/* Bottom Row - 2 Buttons */}
-          <div className='flex justify-between mt-4 gap-4 pb-8'>
+          <div className='flex justify-between mt-4 gap-4 pb-8 max-w-[400px]'>
             <RetroTextInput
               label={"MAX RECIPE: "}
               value={maxRecipe}
               onChange={(e) => setMaxRecipe(e.target.value > 0 ? e.target.value : 1)}
               placeholder="N"
-              stretch={false}
+              stretch={true}
               type='number'
               isActive={multipleRecipe}
             />
