@@ -35,7 +35,6 @@ export default function RetroButton({ iconPath, text, onClick }) {
           text-xs md:text-lg
           text-center flex-grow
           tracking-widest
-          mr-4
         ">
           {text}
         </span>
