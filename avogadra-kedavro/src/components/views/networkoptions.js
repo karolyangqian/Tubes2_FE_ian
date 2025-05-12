@@ -80,5 +80,9 @@ export const options = {
   },
   layout: {
     improvedLayout: false,
+    hierarchical: {
+      direction: "DU",
+      sortMethod: "directed",
+    },
   }
 };
