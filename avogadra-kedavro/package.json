@@ -6,6 +6,7 @@
     "dev": "dotenvx run -- next dev --turbopack",
     "build": "dotenvx run -- next build",
     "start": "dotenvx run -- next start",
+    "start:docker": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "vis-data": "^7.1.9",
     "vis-network": "^9.1.9"
   },
   "devDependencies": {
