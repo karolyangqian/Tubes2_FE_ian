@@ -1,0 +1,31 @@
+# git
+.git
+.gitignore
+.gitattributes
+
+# docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn*
+*.pnp.*
+
+.next/
+out/
+
+# OS
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# .env
+# .env.*
+!.env.example
