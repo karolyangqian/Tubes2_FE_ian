@@ -17,6 +17,7 @@ export default function Start() {
   const [graphData, setGraphData] = React.useState([])
   const [time, setTime] = React.useState(0)
   const [node, setNode] = React.useState(0)
+  const [recipeFound, setRecipeFound] = React.useState(false)
   
 
   const handleOnSearch = () => {
@@ -38,8 +39,12 @@ export default function Start() {
   };
 
   const fetchGraphData = async () => {
+    fetch('/api/hello')
+    .then(r => r.json())
+    .then(d => console.log(d));
     if (elements.length > 0 && (bfs || dfs || bidirectional) && maxRecipe > 0) {
       setSearched(false);
+      setRecipeFound(false);
       setGraphData([]);
       setTime(0);
       setNode(0);
@@ -48,13 +53,15 @@ export default function Start() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solve-recipe?element=${elements}&algorithm=${algorithm}&count=${maxRecipe}`);
         const data = await response.json();
         setGraphData(convertDataToNetwork(data));
-        console.log('Graph data fetched:', data);
+        setRecipeFound(data.recipes.length > 0);
+        console.log('Data fetched:', data);
+        console.log('Graph data:', graphData);
         setSearched(true);
         setTime(data.searchTimeMs);
         setNode(data.nodesVisited);
       }
       catch (error) {
-        setGraphData([]);
+        // setGraphData([]);
         setSearched(true);
       }
     }
@@ -76,15 +83,15 @@ export default function Start() {
   }, [searched, graphData]);
 
   return (
-    <div className='absolute flex flex-col inset-0 bg-[#2E1855]/84 rounded-4xl m-10 p-8 overflow-hidden'>
+    <div className='absolute flex flex-col inset-0 bg-[#2E1855]/84 rounded-4xl m-10 p-8 overflow-y-auto snap-always snap-y'>
       <h1 className="text-center text-white text-xs md:text-lg lg:text-2xl font-bold font-press-start text-shadow-press-start tracking-widest">
         PICK YOUR ALGORITHM, LET THE ALCHEMY BEGIN.
       </h1>
       { /* UI components */ }
-      <div className='flex p-8 justify-between'>
+      <div className='flex p-8 justify-between snap-always snap-x overflow-x-auto'>
         <div className='flex flex-col'>
           {/* Top Row - 3 Buttons */}
-          <div className='flex justify-between mb-4 gap-4'>
+          <div className='flex justify-between mb-4 gap-4 flex-wrap'>
             <RetroButton
               iconPath={bfs ? "/start/orb-purple.svg" : "/start/orb-black.svg"}
               text="BFS"
@@ -103,7 +110,7 @@ export default function Start() {
           </div>
           
           {/* Bottom Button */}
-          <div className='flex justify-between'>
+          <div className='flex justify-between pb-8'>
             <RetroTextInput
               value={elements.toString().toUpperCase()}
               onChange={(e) => setElements(e.target.value.toLowerCase())}
@@ -126,13 +133,13 @@ export default function Start() {
           </div>
           
           {/* Bottom Row - 2 Buttons */}
-          <div className='flex justify-between mt-4 gap-4'>
+          <div className='flex justify-between mt-4 gap-4 pb-8 max-w-[400px]'>
             <RetroTextInput
               label={"MAX RECIPE: "}
               value={maxRecipe}
               onChange={(e) => setMaxRecipe(e.target.value > 0 ? e.target.value : 1)}
               placeholder="N"
-              stretch={false}
+              stretch={true}
               type='number'
               isActive={multipleRecipe}
             />
@@ -145,20 +152,20 @@ export default function Start() {
         </div>
       </div>
       {searched && (
-        <div className='flex justify-between grid-cols-2 overflow-hidden gap-4 items-center'>
+        <div className='flex justify-between grid-cols-2 gap-4 items-center snap-x overflow-hidden'>
           <div id='graph' className='h-full w-full mt-8'></div>
           <div className='flex flex-col items-center gap-10'>
             <div className='text-center text-[#E77BFF] text-xl lg:text-xl max-w-[600px] font-bold font-press-start text-shadow-press-start tracking-widest leading-10'>
-              {graphData && graphData.length > 0 && graphData.nodes.length > 0 ? 
+              {recipeFound ? 
                 "VOILÀ, YOU FOUND THE RECIPE!" : "NO RECIPE FOUND, TRY ANOTHER!"
               }
             </div>
-            <div className='flex items-center bg-[url("/start/button-brown-plain.svg")] bg-cover bg-no-repeat h-[90px] aspect-[356/108]'>
+            <div className='flex items-center bg-[url("/start/button-brown-plain.svg")] bg-cover bg-no-repeat h-[60px] md:h-[90px] aspect-[356/108] '>
               <h1 className="text-left text-black font-press-start text-shadow-press-start text-xs md:text-lg font-bold tracking-wider pl-8">
                 TIME:{time.toPrecision(5)}ms
               </h1>
             </div>
-            <div className='flex items-center bg-[url("/start/button-brown-plain.svg")] bg-cover bg-no-repeat h-[90px] aspect-[356/108]'>
+            <div className='flex items-center bg-[url("/start/button-brown-plain.svg")] bg-cover bg-no-repeat h-[60px] md:h-[90px] aspect-[356/108]'>
               <h1 className="text-left text-black font-press-start text-shadow-press-start text-xs md:text-lg font-bold tracking-wider pl-8">
                 NODE:{node}
               </h1>
